@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Content } from 'src/content/content.entity';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from 'typeorm';
 
 @Entity()
 export class Room extends BaseEntity {
@@ -7,4 +8,7 @@ export class Room extends BaseEntity {
 
     @Column()
     titles: string;
+
+    @OneToMany(() => Content, content => content.room)
+    contents: Content[];
 }
