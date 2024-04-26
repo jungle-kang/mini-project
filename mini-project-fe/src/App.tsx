@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import Modal from './Modal';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleCreateRoom = (title, people) => {
+    console.log('방 제목:', title);
+    console.log('인원 수:', people);
+    // TODO: 방 생성 로직 구현
+    setModalOpen(false);
+  };
 
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button className={'modal-open-btn'} onClick={() => setModalOpen(true)}>
+          방 만들기
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    
+      <div className='roomList'>
+        <h4>방이름</h4>
+      </div>
+      <Modal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onCreateRoom={handleCreateRoom}
+      />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
