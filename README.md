@@ -1,4 +1,6 @@
 ## Swagger 사용법
+### http://localhost:3000/api-doc 에서 볼수있음
+api-doc(변경가능)
 
 ```
 $> npm install --save @nestjs/swagger swagger-ui-express
@@ -16,7 +18,7 @@ export function setupSwagger(app) {
         .addTag('swagger')
         .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('api-doc', app, document);
 }
 ```
 ### main.ts
