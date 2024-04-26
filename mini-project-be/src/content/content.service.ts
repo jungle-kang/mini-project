@@ -25,6 +25,7 @@ export class ContentService {
         room_id: { id: roomId }
       }
     });
+    console.log(comment);
     return comment;
   }
 
