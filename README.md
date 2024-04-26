@@ -60,3 +60,24 @@ export class UpdateContentDto {
     text: string;
 }
 ```
+### postman 처럼 사용가능
+```ts
+ @Patch('/:id/status')
+    @ApiOperation({
+        summary: 'ID로 특정 게시물의 상태 업데이트',
+        description: 'default public -> private 로 변경가능 '
+    })
+    @ApiConsumes('application/x-www-form-urlencoded') // form 형식(postman 처럼)
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                status: {
+                    type: 'string',
+                    description: "private or public",
+                    enum: ['private', 'public']
+                },
+            },
+        },
+    })
+```
