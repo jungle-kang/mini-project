@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 
 export default function Content(){
@@ -55,7 +55,11 @@ export default function Content(){
     };
 
     return(
-        <main className="w-screen text-center">
+        <main className="flex w-screen text-center">
+            <Link to="/" className="w-20">
+                <button>뒤로</button>
+            </Link>
+            <div className="w-full">
             <div className="text-5xl font-extrabold">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
                 @Room Contents
@@ -80,6 +84,7 @@ export default function Content(){
                     </div>
                     ))}
             </>)}
+            </div>
         </main>
     );
 }
