@@ -9,6 +9,6 @@ export class Room extends BaseEntity {
     @Column()
     titles: string;
 
-    @OneToMany(() => Content, content => content.room)
+    @OneToMany(() => Content, content => content.room_id)
     contents: Content[];
 }

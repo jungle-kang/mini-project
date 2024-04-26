@@ -9,13 +9,13 @@ export class ContentController {
   constructor(private readonly contentService: ContentService) { }
 
   @Post(':roomId')
-  create(@Param('roomId') roomId: number, @Body() createContentDto: CreateContentDto) {
-    return this.contentService.create(roomId, createContentDto.text);
+  createContent(@Param('roomId') roomId: number, @Body() createContentDto: CreateContentDto) {
+    return this.contentService.createContent(roomId, createContentDto.text);
   }
 
   @Get(':roomId')
-  findAll(@Param('roomId') roomId: number) {
-    return this.contentService.findAll(roomId);
+  getContentByRoomId(@Param('roomId') roomId: number) {
+    return this.contentService.getContentByRoomId(roomId);
   }
 
   // @Put(':id')
@@ -23,12 +23,12 @@ export class ContentController {
   //   return this.contentService.update(id, updateContentDto.text);
   // }
   @Patch(':id')
-  updatePartial(@Param('id') id: number, @Body() updateContentDto: UpdateContentDto) {
-    return this.contentService.update(id, updateContentDto.text);
+  updateContent(@Param('id') id: number, @Body() updateContentDto: UpdateContentDto) {
+    return this.contentService.updateContent(id, updateContentDto.text);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.contentService.delete(id);
+  deleteContent(@Param('id') id: number) {
+    return this.contentService.deleteContent(id);
   }
 }

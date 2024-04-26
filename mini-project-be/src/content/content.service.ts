@@ -11,19 +11,27 @@ export class ContentService {
     private contentRepository: Repository<Content>
   ) { }
 
-  create(roomId: number, text: string): Promise<Content> {
-    const content = this.contentRepository.create({ text, room: { id: roomId } });
+  async createContent(roomId: number, text: string): Promise<Content> {
+    const content = await this.contentRepository.create({
+      text,
+      room_id: { id: roomId }
+    });
     return this.contentRepository.save(content);
   }
 
-  findAll(roomId: number): Promise<Content[]> {
-    return this.contentRepository.find({ where: { room: { id: roomId } } });
+  async getContentByRoomId(roomId: number): Promise<Content[]> {
+    const comment = await this.contentRepository.find({
+      where: {
+        room_id: { id: roomId }
+      }
+    });
+    return comment;
   }
 
   // update(id: number, text: string): Promise<Content> {
   //   return this.contentRepository.save({ id, text });
   // }
-  async update(id: number, text: string): Promise<Content> {
+  async updateContent(id: number, text: string): Promise<Content> {
     // ID에 해당하는 Content를 찾습니다.
     const content = await this.contentRepository.findOne({ where: { id: id } });
     if (!content) {
@@ -35,7 +43,7 @@ export class ContentService {
     return this.contentRepository.save(content);
   }
 
-  async delete(id: number): Promise<void> {
+  async deleteContent(id: number): Promise<void> {
     const result = await this.contentRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Content with ID "${id}" not found`);
