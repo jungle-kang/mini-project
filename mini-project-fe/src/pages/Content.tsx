@@ -7,6 +7,7 @@ export default function Content(){
         id: '',
         text: '',
     }]);
+    const [submitted, setSubmitted] = useState(false);
     const [inputValue, setInputValue] = useState('');
     useEffect(()=>{
         async function fetchData() {
@@ -22,7 +23,7 @@ export default function Content(){
             }
         }
         fetchData();
-    },[]);
+    },[submitted]);
 
     const handleChange = (e:ChangeEvent<HTMLTextAreaElement>)=>{
         setInputValue(e.target.value);
@@ -30,10 +31,24 @@ export default function Content(){
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setSubmitted(false);
+        const data = {
+            text: inputValue,
+            roomId: contentId === undefined ? '':contentId,
+        }
+        console.log(JSON.stringify(data));
         try{
             const response = await fetch(`/api/contents/${contentId}`,{
-                method:'POST'
+                method:'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+                credentials: 'include'
             })
+            const result = await response.json();
+            console.log(result);
+            setSubmitted(true);
         }catch(e){
             console.error('post error:',e);
         }

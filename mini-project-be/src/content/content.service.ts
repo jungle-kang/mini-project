@@ -12,6 +12,7 @@ export class ContentService {
   ) { }
 
   async createContent(roomId: number, text: string): Promise<Content> {
+    console.log(roomId,text);
     const content = await this.contentRepository.create({
       text,
       room_id: { id: roomId }
@@ -25,7 +26,6 @@ export class ContentService {
         room_id: { id: roomId }
       }
     });
-    console.log(comment);
     return comment;
   }
 
