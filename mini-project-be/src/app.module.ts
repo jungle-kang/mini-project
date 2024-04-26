@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoomCreate } from './room-create/entities/room-create.entity';
 import { RoomCreateModule } from './room-create/room-create.module';
+import { ContentModule } from './content/content.module';
+import { RoomModule } from './room/room.module';
 
 @Module({
   imports: [
@@ -14,13 +16,14 @@ import { RoomCreateModule } from './room-create/room-create.module';
       username: 'root',
       password: '1234',
       database: 'mini',
-      entities: [RoomCreate],
+      entities: [__dirname + '/../**/*.entity.{js, ts}', RoomCreate],
       synchronize: true,
     }),
     RoomCreateModule,
+    ContentModule,
+    RoomModule,
   ],
   controllers: [AppController],
   providers: [AppService],
- })
-
-export class AppModule {}
+})
+export class AppModule { }
