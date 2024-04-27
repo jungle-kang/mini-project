@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContentModule } from './content/content.module';
 import { RoomModule } from './room/room.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -17,10 +20,12 @@ import { RoomModule } from './room/room.module';
       entities: [__dirname + '/../**/*.entity.{js, ts}'],
       synchronize: true,
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
     ContentModule,
     RoomModule,
+    AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AuthController],
   providers: [AppService],
 })
 export class AppModule { }

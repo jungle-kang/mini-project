@@ -1,7 +1,7 @@
 // src/content/content.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Content } from './content.entity';
 
 @Injectable()
@@ -11,6 +11,7 @@ export class ContentService {
     private contentRepository: Repository<Content>
   ) { }
 
+
   async createContent(roomId: number, text: string): Promise<Content> {
     const content = await this.contentRepository.create({
       text,
@@ -19,13 +20,22 @@ export class ContentService {
     return this.contentRepository.save(content);
   }
 
+  // async getContentByRoomId(roomId: number): Promise<Content[]> {
+  //   // const content = await this.contentRepository.find({
+  //   //   where: {
+  //   //     room_id: { id: roomId }
+  //   //   }
+  //   // });
+  //   return content;
+  // }
+
   async getContentByRoomId(roomId: number): Promise<Content[]> {
-    const comment = await this.contentRepository.find({
-      where: {
-        room_id: { id: roomId }
-      }
-    });
-    return comment;
+    const content = await this.contentRepository
+      .createQueryBuilder("content")
+      .leftJoinAndSelect("content.room_id", "room")
+      .where("room.id = :roomId", { roomId })
+      .getMany();
+    return content;
   }
 
   // update(id: number, text: string): Promise<Content> {
