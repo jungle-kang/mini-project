@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [roomTitle, setRoomTitle] = useState('');
   const [roomPeople, setRoomPeople] = useState('');
   const [roomList, setRoomList] = useState([
-      {
-          id :'',
-          titles:'',
-      }
+    {
+      id: '',
+      titles: '',
+    }
   ]);
 
   const handleCreateRoom = (title, people) => {
@@ -22,21 +22,25 @@ const App = () => {
     setRoomPeople(people); // 인원 수 업데이트
     setRoomList([{ title, people }, ...roomList]); // 새로운 방을 방 리스트의 맨 앞에 추가
   };
-  useEffect(()=>{
-      async function fetchData() {
-          try{
-              const response = await fetch(`/api/room-create/all`,{
-                  method:'GET',
-                  credentials: 'include'
-              })
-              const result = await response.json();
-              setRoomList(result.data);
-          }catch (e){
-              console.error('fetch error:',e);
-          }
-      };
-      fetchData();
-  },[]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(`/api/rooms`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+        const result = await response.json();
+        setRoomList(result);
+      } catch (e) {
+        console.error('fetch error:', e);
+      }
+    };
+    fetchData();
+
+    console.log(roomList);
+  }, []);
+
+  console.log(roomList);
 
   return (
     <>
@@ -45,12 +49,12 @@ const App = () => {
           방 만들기
         </button>
       </div>
-    
+
       <div className=''>
-        {roomList.map(({id, titles}) => (
+        {roomList.map(({ id, titles }) => (
           <div className="h-12 pt-2 text-center w-40 mt-4 bg-amber-500" key={id}>
-            <Link to={"/content/"+id}>
-                <h4>{titles}</h4> {/* 방 제목 출력 */}
+            <Link to={"/content/" + id}>
+              <h4>{titles}</h4> {/* 방 제목 출력 */}
             </Link>
           </div>
         ))}
