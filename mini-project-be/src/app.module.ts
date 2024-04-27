@@ -6,6 +6,9 @@ import { RoomCreate } from './room-create/entities/room-create.entity';
 import { RoomCreateModule } from './room-create/room-create.module';
 import { ContentModule } from './content/content.module';
 import { RoomModule } from './room/room.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,11 +22,13 @@ import { RoomModule } from './room/room.module';
       entities: [__dirname + '/../**/*.entity.{js, ts}', RoomCreate],
       synchronize: true,
     }),
-    RoomCreateModule,
+
+    ConfigModule.forRoot({ isGlobal: true }),
     ContentModule,
     RoomModule,
+    AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AuthController],
   providers: [AppService],
 })
 export class AppModule { }
