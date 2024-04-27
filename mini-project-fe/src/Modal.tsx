@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import {useNavigate} from "react-router-dom";
 
 interface ModalParam {
   isOpen: boolean;
@@ -11,17 +12,29 @@ interface ModalParam {
   const modalBackground = useRef(null);
   const [title, setTitle] = useState('');
   const [people, setPeople] = useState('');
-
-  const handleCreateRoom = () => {
+  const navigate = useNavigate();
+  const handleCreateRoom = async () => {
     // 방 생성 전 유효성 검사
     const parsedPeople = parseInt(people);
     if (isNaN(parsedPeople) || parsedPeople < 0 || parsedPeople > 8) {
       alert('인원 수는 0 이상 8 이하의 값을 입력해주세요.');
       return;
     }
-
     // 방 생성 로직을 실행합니다.
-    onCreateRoom(title, parsedPeople);
+    const response = await fetch(`/api/rooms`,{
+      method:'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        titles:title,
+      }),
+      credentials: 'include'
+    })
+    const result = await response.json();
+    if(result.id !== null){
+      navigate(`/content/${result.id}`);
+    }
   };
 
   return (

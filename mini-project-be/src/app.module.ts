@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RoomCreate } from './room-create/entities/room-create.entity';
+import { RoomCreateModule } from './room-create/room-create.module';
 import { ContentModule } from './content/content.module';
 import { RoomModule } from './room/room.module';
 import { AuthController } from './auth/auth.controller';
@@ -17,9 +19,10 @@ import { ConfigModule } from '@nestjs/config';
       username: 'root',
       password: '1234',
       database: 'mini',
-      entities: [__dirname + '/../**/*.entity.{js, ts}'],
+      entities: [__dirname + '/../**/*.entity.{js, ts}', RoomCreate],
       synchronize: true,
     }),
+
     ConfigModule.forRoot({ isGlobal: true }),
     ContentModule,
     RoomModule,

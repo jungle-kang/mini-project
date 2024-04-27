@@ -16,6 +16,7 @@ export class ContentController {
     description: 'roomId에 해당하는 content 생성 API'
   })
   createContent(@Param('roomId') roomId: number, @Body() createContentDto: CreateContentDto) {
+    console.log(createContentDto);
     return this.contentService.createContent(roomId, createContentDto.text);
   }
 
