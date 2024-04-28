@@ -3,20 +3,22 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Content } from './content.entity';
+import { Room } from '../room/room.entity';
 
 @Injectable()
 export class ContentService {
   constructor(
     @InjectRepository(Content)
-    private contentRepository: Repository<Content>
-  ) { }
-
+    private contentRepository: Repository<Content>,
+    @InjectRepository(Room)
+    private roomRepository: Repository<Room>,
+  ) {}
 
   async createContent(roomId: number, text: string): Promise<Content> {
-    console.log(roomId,text);
+    console.log(roomId, text);
     const content = await this.contentRepository.create({
       text,
-      room_id: { id: roomId }
+      room_id: { id: roomId },
     });
     return this.contentRepository.save(content);
   }
@@ -31,14 +33,23 @@ export class ContentService {
   // }
 
   async getContentByRoomId(roomId: number): Promise<Content[]> {
-    const content = await this.contentRepository
-      .createQueryBuilder("content")
-      .leftJoinAndSelect("content.room_id", "room")
-      .where("room.id = :roomId", { roomId })
+    let content: any = await this.contentRepository
+      .createQueryBuilder('content')
+      .leftJoinAndSelect('content.room_id', 'room')
+      .where('room.id = :roomId', { roomId })
       .getMany();
+    if (content.length === 0) {
+      content = await this.roomRepository.findBy({ id: roomId });
+      content = [
+        {
+          id: '',
+          text: '',
+          room_id: content[0],
+        },
+      ];
+    }
     return content;
   }
-
   // update(id: number, text: string): Promise<Content> {
   //   return this.contentRepository.save({ id, text });
   // }
