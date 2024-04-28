@@ -79,7 +79,7 @@ export default function Content() {
                     </div>
                     <button type="submit" className="bg-blue-300 font-bold text-white">글 작성</button>
                 </form>
-                {(Array.isArray(post) && post.length === 0) || post[0].id === null ? (
+                {(Array.isArray(post) && post.length === 0) || post[0].id === "" ? (
                     <div className="mt-10">글이 없습니다.</div>
                 ) : (<>
                     {post.map(({ id, text }) => (
